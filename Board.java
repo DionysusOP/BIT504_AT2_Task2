@@ -3,6 +3,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Board extends JPanel {
 	// grid line width
 	public static final int GRID_WIDTH = 8;

@@ -178,7 +178,7 @@ public class GameMain extends JPanel implements MouseListener {
 		int rowSelected = mouseY / CELL_SIZE;
 		int colSelected = mouseX / CELL_SIZE;
 
-		// Validation output to confirm which cell is being selected
+		// Validation output to console to confirm which cell is being selected
 		System.out.println("Mouse X: " + mouseX + " Mouse Y: " + mouseY);
 		System.out.println("Row Selected: " + rowSelected + " Col Selected: " + colSelected);
 
@@ -211,10 +211,6 @@ public class GameMain extends JPanel implements MouseListener {
 			repaint();
 		}
 	}
-
-	// Handle game over and restart logic here if needed
-
-	// TODO: redraw the graphics on the UI
 
 	@Override
 	public void mousePressed(MouseEvent e) {
