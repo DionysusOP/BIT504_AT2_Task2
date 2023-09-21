@@ -5,19 +5,15 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel {
-	// grid line width
 	public static final int GRID_WIDTH = 8;
-	// grid line half width
 	public static final int GRID_WIDTH_HALF = GRID_WIDTH / 2;
 
-	// 2D array of ROWS-by-COLS Cell instances
 	Cell[][] cells;
 
-	/** Constructor to create the game board */
 	public Board() {
-		// Initialize the cells array using ROWS and COLS constants
 		cells = new Cell[GameMain.ROWS][GameMain.COLS];
 
+		// Create a grid of cells for the game board
 		for (int row = 0; row < GameMain.ROWS; ++row) {
 			for (int col = 0; col < GameMain.COLS; ++col) {
 				cells[row][col] = new Cell(row, col);
@@ -25,46 +21,48 @@ public class Board extends JPanel {
 		}
 	}
 
-	/** Return true if it is a draw (i.e., no more EMPTY cells) */
 	public boolean isDraw() {
-		return false;
+		// Check if the game is a draw (no more empty cells)
+		for (int row = 0; row < GameMain.ROWS; row++) {
+			for (int col = 0; col < GameMain.COLS; col++) {
+				if (cells[row][col].content == Player.Empty) {
+					// There's at least one empty cell, so it's not a draw
+					return false;
+				}
+			}
+		}
 
-		// TODO: Check whether the game has ended in a draw.
-		// Hint: Use a nested loop (see the constructor for an example). Check whether
-		// any of the cells content in the board grid are Player.Empty. If they are, it
-		// is not a draw.
-		// Hint: Return false if it is not a draw, return true if there are no empty
-		// positions left
-
+		// All cells are filled, and no player has won, so it's a draw
+		return true;
 	}
 
-	/**
-	 * Return true if the current player "thePlayer" has won after making their move
-	 */
 	public boolean hasWon(Player thePlayer, int playerRow, int playerCol) {
-		// check if player has 3-in-that-row
+		// Check if a player has won after making their move
+
+		// Check horizontally
 		if (cells[playerRow][0].content == thePlayer && cells[playerRow][1].content == thePlayer
 				&& cells[playerRow][2].content == thePlayer)
 			return true;
 
-		// TODO: Check if the player has 3 in the playerCol.
-		// Hint: Use the row code above as a starting point, remember that it goes
-		// cells[row][column]
-
-		// 3-in-the-diagonal
-		if (cells[0][0].content == thePlayer && cells[1][1].content == thePlayer && cells[2][2].content == thePlayer)
+		// Check vertically
+		if (cells[0][playerCol].content == thePlayer && cells[1][playerCol].content == thePlayer
+				&& cells[2][playerCol].content == thePlayer)
 			return true;
 
-		// TODO: Check the diagonal in the other direction
+		// Check diagonally (from top-left to bottom-right)
+		if (playerRow == playerCol && cells[0][0].content == thePlayer && cells[1][1].content == thePlayer
+				&& cells[2][2].content == thePlayer)
+			return true;
 
-		// no winner, keep playing
+		// Check diagonally (from top-right to bottom-left)
+		if (playerRow + playerCol == 2 && cells[0][2].content == thePlayer && cells[1][1].content == thePlayer
+				&& cells[2][0].content == thePlayer)
+			return true;
+
+		// No winner, keep playing
 		return false;
 	}
 
-	/**
-	 * Draws the grid (rows then columns) using constant sizes, then call on the
-	 * Cells to paint themselves into the grid
-	 */
 	public void paint(Graphics g) {
 		// Draw the cells
 		for (int row = 0; row < GameMain.ROWS; ++row) {
@@ -73,7 +71,7 @@ public class Board extends JPanel {
 			}
 		}
 
-		// Draw the grid lines (place this code after drawing cells)
+		// Draw the grid lines
 		g.setColor(Color.gray);
 		for (int row = 1; row < GameMain.ROWS; ++row) {
 			g.fillRoundRect(0, GameMain.CELL_SIZE * row - GRID_WIDTH_HALF, GameMain.CANVAS_WIDTH - 1, GRID_WIDTH,
@@ -86,11 +84,9 @@ public class Board extends JPanel {
 	}
 
 	public void setCellContent(int row, int col, Player player) {
+		// Set the content of a cell to a player's symbol
 		if (row >= 0 && row < GameMain.ROWS && col >= 0 && col < GameMain.COLS) {
 			cells[row][col].content = player;
-
 		}
-
 	}
-
 }
